@@ -1,0 +1,31 @@
+# Ignore editor/OS junk
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Ignore shell history
+.zsh_history
+.bash_history
+
+# Ignore caches
+.cache/
+*.log
+
+# Ignore tmux plugins (installed by TPM)
+.config/tmux/plugins/
+.tmux/plugins/
+
+# Ignore qutebrowser runtime data
+qutebrowser/.qutebrowser/bookmarks/
+qutebrowser/.qutebrowser/quickmarks
+qutebrowser/.qutebrowser/history
+
+# Ignore neovim backup/undo/swap dirs
+.config/nvim/backup/
+.config/nvim/swap/
+.config/nvim/undo/
+
+# Ignore local machine-specific configs
+.local/
+
