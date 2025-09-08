@@ -1,12 +1,194 @@
 #!/bin/bash
 
-options=(
-	style=round
-	width=4.0
-	hidpi=off
-	active_color=0xc0e2e2e3
-	inactive_color=0xc02c2e34
-	background_color=0x302c2e34
-)
+# Catppuccin Mocha Theme Colors
+ROSEWATER="0xfff5e0dc"
+FLAMINGO="0xfff2cdcd"
+PINK="0xfff5c2e7"
+MAUVE="0xffcba6f7"
+MAUVE_PASTEL="0xffe0bfff"
+MAUVE_LIGHT="0xff8839ef"
+RED="0xfff38ba8"
+MAROON="0xffeba0ac"
+PEACH="0xfffab387"
+YELLOW="0xfff9e2af"
+GREEN="0xffa6e3a1"
+TEAL="0xff94e2d5"
+SKY="0xff89dceb"
+SAPPHIRE="0xff74c7ec"
+BLUE="0xff89b4fa"
+LAVENDER="0xffb4befe"
+TEXT="0xffcdd6f4"
+SUBTEXT1="0xffbac2de"
+SUBTEXT0="0xffa6adc8"
+OVERLAY2="0xff9399b2"
+OVERLAY1="0xff7f849c"
+OVERLAY0="0xff6c7086"
+SURFACE2="0xff585b70"
+SURFACE1="0xff45475a"
+SURFACE0="0xff313244"
+BASE="0xff1e1e2e"
+MANTLE="0xff181825"
+CRUST="0xff11111b"
 
-borders "${options[@]}"
+# Function to start borders
+start_borders() {
+    # Kill any existing borders
+    pkill -f borders 2>/dev/null
+    sudo pkill -f borders 2>/dev/null
+    sleep 0.5
+    
+    # Borders configuration
+    options=(
+        style=round
+        width=2.0
+        hidpi=on
+        active_color=$MANTLE_LIGHT
+        inactive_color=0xaa45475e
+        ax_delay=0
+        blur_radius=9.0
+        blacklist="Activity Monitor,Archive Utility,System Preferences"
+        order=above
+    )
+    
+    # Start borders in background
+    borders "${options[@]}" &
+}
+
+# Function to monitor window events and restart borders
+monitor_windows() {
+    echo "Starting window event monitor..."
+    
+    # Create AppleScript to monitor window events
+    cat > /tmp/window_monitor.scpt << 'EOF'
+on run
+    tell application "System Events"
+        repeat
+            try
+                -- Get current frontmost application
+                set frontApp to name of first application process whose frontmost is true
+                
+                -- Wait a bit
+                delay 0.5
+                
+                -- Check if frontmost app changed
+                set newFrontApp to name of first application process whose frontmost is true
+                
+                if frontApp is not equal to newFrontApp then
+                    -- App focus changed, restart borders
+                    do shell script "pkill -f borders; sleep 0.2; /usr/local/bin/borders style=round width=3.0 active_color=0xffcba6f7 inactive_color=0xaa45475a background_color=0x301e1e2e ax_delay=0 order=above &> /dev/null &"
+                end if
+            end try
+        end repeat
+    end tell
+end run
+EOF
+    
+    # Run the monitor script in background
+    osascript /tmp/window_monitor.scpt &
+    MONITOR_PID=$!
+    echo "Window monitor started (PID: $MONITOR_PID)"
+}
+
+# Alternative method using fswatch to monitor window changes
+monitor_with_fswatch() {
+    echo "Starting fswatch-based monitor..."
+    
+    # Monitor system events that might indicate window changes
+    fswatch -o /tmp 2>/dev/null | while read -r event; do
+        # Restart borders on any system event (this is aggressive but effective)
+        pkill -f borders 2>/dev/null
+        sleep 0.1
+        start_borders
+    done &
+    
+    FSWATCH_PID=$!
+    echo "fswatch monitor started (PID: $FSWATCH_PID)"
+}
+
+# Method using periodic restart (every 2 seconds)
+monitor_periodic() {
+    echo "Starting periodic restart monitor (every 3 seconds)..."
+    
+    while true; do
+        sleep 3
+        
+        # Check if borders is still running
+        if ! pgrep -f borders > /dev/null; then
+            echo "Borders not running, restarting..."
+            start_borders
+        else
+            # Restart anyway to ensure focus tracking
+            pkill -f borders 2>/dev/null
+            sleep 0.2
+            start_borders
+        fi
+    done &
+    
+    PERIODIC_PID=$!
+    echo "Periodic monitor started (PID: $PERIODIC_PID)"
+}
+
+# Cleanup function
+cleanup() {
+    echo "Cleaning up..."
+    pkill -f borders 2>/dev/null
+    pkill -f window_monitor.scpt 2>/dev/null
+    kill $MONITOR_PID 2>/dev/null
+    kill $FSWATCH_PID 2>/dev/null
+    kill $PERIODIC_PID 2>/dev/null
+    rm -f /tmp/window_monitor.scpt 2>/dev/null
+    exit 0
+}
+
+# Set up signal handlers
+trap cleanup SIGINT SIGTERM
+
+# Main execution
+echo "JankyBorders Auto-Restart System"
+echo "================================"
+
+# Initial borders start
+start_borders
+sleep 2
+
+# Check if borders started successfully
+if pgrep -f borders > /dev/null; then
+    echo "✓ Borders started successfully"
+else
+    echo "✗ Borders failed to start - check permissions"
+    echo "Make sure you have accessibility permissions enabled"
+    exit 1
+fi
+
+# Choose monitoring method
+echo ""
+echo "Choose monitoring method:"
+echo "1. Periodic restart (every 3 seconds) - Most reliable"
+echo "2. AppleScript window monitor - More efficient but may miss events"
+echo "3. fswatch monitor - Experimental"
+echo ""
+read -p "Enter choice (1-3, default 1): " choice
+
+case $choice in
+    2)
+        monitor_windows
+        ;;
+    3)
+        if command -v fswatch &> /dev/null; then
+            monitor_with_fswatch
+        else
+            echo "fswatch not found, falling back to periodic method"
+            monitor_periodic
+        fi
+        ;;
+    *)
+        monitor_periodic
+        ;;
+esac
+
+echo ""
+echo "Monitor is running. Press Ctrl+C to stop."
+echo "Borders will automatically restart when windows are resized/focused."
+
+# Keep the script running
+wait

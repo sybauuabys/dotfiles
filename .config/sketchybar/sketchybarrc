@@ -21,19 +21,19 @@ export RED=0xfff38ba8
 FONT_FACE="JetBrainsMono Nerd Font"
 PLUGIN_DIR="$HOME/.config/sketchybar/plugins"
 
-# ===== BAR SETUP (TRANSPARENT BACKGROUND) =====
+# ===== BAR SETUP =====
 sketchybar --bar \
     height=36 \
-    color=0x00000000 \
-    shadow=off \
+    color=$MANTLE \
+    shadow=on \
     position=top \
     sticky=on \
-    padding_right=15 \
-    padding_left=15 \
-    corner_radius=0 \
-    y_offset=8 \
+    padding_right=5 \
+    padding_left=5 \
+    corner_radius=12 \
+    y_offset=3 \
     margin=12 \
-    blur_radius=0 \
+    blur_radius=40 \
     notch_width=200
 
 # ===== DEFAULT STYLING =====
@@ -52,20 +52,19 @@ sketchybar --default \
     background.height=28 \
     background.corner_radius=8
 
-# ===== LEFT SIDE CONTAINER =====
-sketchybar --add bracket left_container \
-           --set left_container \
-                 background.color=$SURFACE0 \
-                 background.corner_radius=12 \
-                 background.height=32 \
-                 background.border_width=1 \
-                 background.border_color=$SURFACE1
+# ===== LEFT SIDE =====
+
+# Left container bracket
+sketchybar --add bracket left_bracket \
+           --set left_bracket background.color=$SURFACE0 \
+                             background.corner_radius=10 \
+                             background.height=30
 
 # Apple logo with system menu
 sketchybar --add item apple_logo left \
            --set apple_logo \
                  icon="" \
-                 icon.font="SF Pro:Black:16.0" \
+                 icon.font="$FONT_FACE:Bold:18.0" \
                  icon.color=$TEXT \
                  label.drawing=off \
                  padding_left=12 \
@@ -91,12 +90,15 @@ for ws in "${WORKSPACES[@]}"; do
                      label="$ws" \
                      label.font="$FONT_FACE:Bold:14.0" \
                      icon.drawing=off \
-                     background.drawing=off \
+                     background.drawing=on \
+                     background.color=$SURFACE1 \
+                     background.corner_radius=6 \
+                     background.height=22 \
                      label.color=$SUBTEXT \
                      padding_left=8 \
                      padding_right=8 \
-                     updates=off \
-                     click_script="aerospace workspace $ws"
+                     click_script="aerospace workspace $ws" \
+                     script="$PLUGIN_DIR/aerospace.sh"
 done
 
 # Second separator
@@ -109,7 +111,7 @@ sketchybar --add item left_sep2 left \
                  padding_left=4 \
                  padding_right=4
 
-# Current application
+# Current application (no animation)
 sketchybar --add item front_app left \
            --set front_app \
                  icon="󰣇" \
@@ -119,13 +121,14 @@ sketchybar --add item front_app left \
                  label.color=$TEXT \
                  label.font="$FONT_FACE:Bold:13.0" \
                  padding_left=8 \
-                 padding_right=12 \
+                 padding_right=10 \
+                 updates=off \
                  script="$PLUGIN_DIR/front_app.sh" \
            --subscribe front_app front_app_switched
 
-# Add items to left container
-sketchybar --set left_container \
-           --add bracket left_container \
+# Update left bracket to include all left items
+sketchybar --set left_bracket \
+           --add bracket left_bracket \
                          apple_logo \
                          left_sep1 \
                          space.u \
@@ -135,32 +138,28 @@ sketchybar --set left_container \
                          left_sep2 \
                          front_app
 
-# ===== CENTER - SPOTIFY CONTAINER =====
+# ===== CENTER - SPOTIFY =====
 sketchybar --add item spotify center \
            --set spotify \
                  icon="󰓇" \
                  icon.font="$FONT_FACE:Bold:18.0" \
                  icon.color=$GREEN \
-                 label="No music playing" \
                  label.max_chars=50 \
                  label.color=$TEXT \
                  label.font="$FONT_FACE:Medium:13.0" \
                  padding_left=12 \
                  padding_right=12 \
                  background.color=$SURFACE0 \
-                 background.corner_radius=12 \
-                 background.height=32 \
-                 background.border_width=1 \
-                 background.border_color=$SURFACE1 \
+                 background.corner_radius=10 \
+                 background.height=30 \
                  background.drawing=on \
                  script="$PLUGIN_DIR/spotify.sh" \
                  update_freq=2 \
-                 click_script="$PLUGIN_DIR/spotify.sh" \
+                 click_script="osascript -e 'tell application \"Spotify\" to playpause'" \
            --subscribe spotify media_change
 
-# ===== RIGHT SIDE CONTAINERS =====
-
-# Clock container
+# ===== RIGHT SIDE =====
+# Clock (no container)
 sketchybar --add item clock right \
            --set clock \
                  icon="󰥔" \
@@ -168,63 +167,59 @@ sketchybar --add item clock right \
                  icon.color=$LAVENDER \
                  label.color=$TEXT \
                  label.font="$FONT_FACE:Bold:13.0" \
-                 padding_left=12 \
-                 padding_right=12 \
-                 background.color=$SURFACE0 \
-                 background.corner_radius=6 \
-                 background.height=30 \
-                 background.border_width=1 \
-                 background.border_color=$SURFACE1 \
-                 background.drawing=on \
+                 padding_left=10 \
+                 padding_right=8 \
                  script="$PLUGIN_DIR/clock.sh" \
                  update_freq=10
 
-# Battery container
+# Separator
+sketchybar --add item right_sep1 right \
+           --set right_sep1 \
+                 icon="│" \
+                 icon.color=$OVERLAY0 \
+                 icon.font="$FONT_FACE:Regular:14.0" \
+                 label.drawing=off \
+                 padding_left=4 \
+                 padding_right=4
+
+# Battery (no container)
 sketchybar --add item battery right \
            --set battery \
                  icon.font="$FONT_FACE:Bold:15.0" \
                  icon.color=$GREEN \
                  label.color=$TEXT \
                  label.font="$FONT_FACE:Bold:13.0" \
-                 padding_left=12 \
-                 padding_right=12 \
-                 background.color=$SURFACE0 \
-                 background.corner_radius=6 \
-                 background.height=30 \
-                 background.border_width=1 \
-                 background.border_color=$SURFACE1 \
-                 background.drawing=on \
+                 padding_left=6 \
+                 padding_right=6 \
                  script="$PLUGIN_DIR/battery.sh" \
                  update_freq=120 \
            --subscribe battery power_source_change system_woke
 
-# Volume container
+# Separator  
+sketchybar --add item right_sep2 right \
+           --set right_sep2 \
+                 icon="│" \
+                 icon.color=$OVERLAY0 \
+                 icon.font="$FONT_FACE:Regular:14.0" \
+                 label.drawing=off \
+                 padding_left=4 \
+                 padding_right=4
+
+# Volume (no container)
 sketchybar --add item volume right \
            --set volume \
                  icon.font="$FONT_FACE:Bold:15.0" \
                  icon.color=$BLUE \
                  label.color=$TEXT \
                  label.font="$FONT_FACE:Bold:13.0" \
-                 padding_left=12 \
-                 padding_right=12 \
-                 background.color=$SURFACE0 \
-                 background.corner_radius=6 \
-                 background.height=30 \
-                 background.border_width=1 \
-                 background.border_color=$SURFACE1 \
-                 background.drawing=on \
+                 padding_left=6 \
+                 padding_right=10 \
                  script="$PLUGIN_DIR/volume.sh" \
            --subscribe volume volume_change
 
 # ===== AEROSPACE INTEGRATION =====
-sketchybar --add event aerospace_workspace_change
-
-# Subscribe workspaces to aerospace changes
-for ws in "${WORKSPACES[@]}"; do
-    sketchybar --subscribe space.$ws aerospace_workspace_change
-done
-
-sketchybar --add item aerospace_listener left \
+sketchybar --add event aerospace_workspace_change \
+           --add item aerospace_listener left \
            --set aerospace_listener \
                  script="$PLUGIN_DIR/aerospace.sh" \
                  label.drawing=off \
