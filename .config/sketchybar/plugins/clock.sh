@@ -8,5 +8,5 @@ TEXT=0xffcdd6f4
 sketchybar --set "$NAME" \
     icon="󰥔" \
     icon.color=$LAVENDER \
-    label="$(date '+%a %b %-d %-H:%M')" \
+    label="$(date '+%a %b %-d %-I:%M %p')"
     label.color=$TEXT
