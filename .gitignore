@@ -1,5 +1,4 @@
 # Ignore editor/OS junk
-.DS_Store
 Thumbs.db
 *.swp
 *.swo
@@ -29,3 +28,30 @@ qutebrowser/.qutebrowser/history
 # Ignore local machine-specific configs
 .local/
 
+# macOS system files (enhanced)
+**/.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Backup and copy directories
+*backup*
+*.bak
+*.backup
+
+# Plugin lock files
+.config/tmux/plugins/*/flake.lock
+.config/tmux/plugins/*/Cargo.lock
+
+# Environment files
+.env*
+*.env
+.config/tmux/plugins/tmux-fzf/scripts/.envs
+
+# Cache and temporary files
+.cache/
+*.cache
+*.tmp
+*.pid
+*.lock
