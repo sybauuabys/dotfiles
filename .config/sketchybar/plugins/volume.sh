@@ -1,36 +1,56 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-# Catppuccin Mocha colors
-BLUE=0xff89b4fa
-TEXT=0xffcdd6f4
+WIDTH=100
 
-# The volume_change event supplies a $INFO variable with the current volume percentage
-if [[ "$SENDER" = "volume_change" ]]; then
-    VOLUME="$INFO"
-    
-    # Choose icon based on volume level
-    case "$VOLUME" in
-        [7-9][0-9]|100)
-            ICON="󰕾"  # High volume
-            ;;
-        [4-6][0-9])
-            ICON="󰖀"  # Medium volume  
-            ;;
-        [1-3][0-9])
-            ICON="󰕿"  # Low volume
-            ;;
-        0)
-            ICON="󰖁"  # Muted
-            ;;
-        *)
-            ICON="󰕾"  # Default
-            ;;
-    esac
-    
-    # Update SketchyBar item
-    sketchybar --set "$NAME" \
-        icon="$ICON" \
-        icon.color=$BLUE \
-        label="${VOLUME}%" \
-        label.color=$TEXT
-fi
+volume_change() {
+  source "$HOME/.config/sketchybar/icons.sh"
+  case $INFO in
+    [6-9][0-9]|100) ICON=$VOLUME_100
+    ;;
+    [3-5][0-9]) ICON=$VOLUME_66
+    ;;
+    [1-2][0-9]) ICON=$VOLUME_33
+    ;;
+    [1-9]) ICON=$VOLUME_10
+    ;;
+    0) ICON=$VOLUME_0
+    ;;
+    *) ICON=$VOLUME_100
+  esac
+
+  sketchybar --set volume_icon label=$ICON
+
+  sketchybar --set $NAME slider.percentage=$INFO \
+             --animate tanh 30 --set $NAME slider.width=$WIDTH 
+
+  sleep 2
+
+  # Check wether the volume was changed another time while sleeping
+  FINAL_PERCENTAGE=$(sketchybar --query $NAME | jq -r ".slider.percentage")
+  if [ "$FINAL_PERCENTAGE" -eq "$INFO" ]; then
+    sketchybar --animate tanh 30 --set $NAME slider.width=0
+  fi
+}
+
+mouse_clicked() {
+  osascript -e "set volume output volume $PERCENTAGE"
+}
+
+mouse_entered() {
+  sketchybar --set $NAME slider.knob.drawing=on
+}
+
+mouse_exited() {
+  sketchybar --set $NAME slider.knob.drawing=off
+}
+
+case "$SENDER" in
+  "volume_change") volume_change
+  ;;
+  "mouse.clicked") mouse_clicked
+  ;;
+  "mouse.entered") mouse_entered
+  ;;
+  "mouse.exited") mouse_exited
+  ;;
+esac
