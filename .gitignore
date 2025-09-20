@@ -55,3 +55,7 @@ qutebrowser/.qutebrowser/history
 *.tmp
 *.pid
 *.lock
+
+# Ignore sensitive configs
+.config/configstore/
+.config/gh/
