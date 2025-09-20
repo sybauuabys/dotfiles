@@ -45,7 +45,7 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 exec-on-workspace-change = [
     '/bin/bash',
     '-c',
-    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPCE'
+    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
 ]
 
 # Gaps between windows (inner-*) and between monitor edges (outer-*).
@@ -56,11 +56,11 @@ exec-on-workspace-change = [
 #                 Monitor pattern is the same as for 'workspace-to-monitor-force-assignment'.
 #                 See: https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
 [gaps]
-inner.horizontal = 5
-inner.vertical =   5
+inner.horizontal = 10
+inner.vertical =   10
 outer.left =       10
-outer.bottom =     5
-outer.top =        46
+outer.bottom =     10
+outer.top =        60
 outer.right =      10
 
 # 'main' binding mode declaration
