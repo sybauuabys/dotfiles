@@ -3,7 +3,7 @@
 source "$HOME/.config/sketchybar/icons.sh"
 source "$HOME/.config/sketchybar/colors.sh"
 
-# Get battery information with better error handling
+# Get battery information with better error handling and more reliable parsing
 BATTERY_INFO=$(pmset -g batt 2>/dev/null)
 if [ $? -ne 0 ] || [ -z "$BATTERY_INFO" ]; then
   # If pmset fails or returns empty, hide the battery item
@@ -11,8 +11,9 @@ if [ $? -ne 0 ] || [ -z "$BATTERY_INFO" ]; then
   exit 0
 fi
 
-PERCENTAGE=$(echo "$BATTERY_INFO" | grep -Eo "\d+%" | cut -d% -f1)
-CHARGING=$(echo "$BATTERY_INFO" | grep -oE "(charging|discharging)" | head -1)
+# More robust parsing of battery information
+PERCENTAGE=$(echo "$BATTERY_INFO" | grep -Eo "[0-9]+%" | head -1 | sed 's/%//')
+CHARGING=$(echo "$BATTERY_INFO" | grep -oE "(charging|discharging|AC Power)" | head -1)
 
 if [ -z "$PERCENTAGE" ]; then
   # If we can't get percentage, hide the battery item
@@ -40,8 +41,8 @@ case ${PERCENTAGE} in
   *) ICON=$BATTERY_0; COLOR=$RED; DRAWING=on
 esac
 
-# Check if charging (only when actually charging, not discharging)
-if [[ $CHARGING == "charging" ]]; then
+# Check if charging (handle both "charging" and "AC Power" states)
+if [[ $CHARGING == "charging" ]] || [[ $CHARGING == "AC Power" ]]; then
   ICON=$BATTERY_CHARGING
   COLOR=$GREEN
   DRAWING=on
@@ -50,4 +51,10 @@ fi
 # Debug: Uncomment the line below to see battery info in terminal
 # echo "Battery: $PERCENTAGE% - Charging: '$CHARGING' - Icon: $ICON"
 
-sketchybar --set battery drawing=$DRAWING icon="$ICON" icon.color=$COLOR
+# Check if label is currently visible and update it with current percentage
+LABEL_DRAWING=$(sketchybar --query battery | jq -r ".label.drawing" 2>/dev/null)
+if [ "$LABEL_DRAWING" = "on" ]; then
+  sketchybar --set battery drawing=$DRAWING icon="$ICON" icon.color=$COLOR label="${PERCENTAGE}%"
+else
+  sketchybar --set battery drawing=$DRAWING icon="$ICON" icon.color=$COLOR
+fi
