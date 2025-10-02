@@ -1,134 +1,209 @@
-c.editor.command = ["vim", "{file}"]
+# pyright: reportUndefinedVariable=false
+# pylint: disable=E0602
+
+# ================================
+# Qutebrowser Configuration
+# Catppuccin Mocha + Performance
+# ================================
+# Location: ~/.config/qutebrowser/config.py
+
+# --- Imports ---
+config.load_autoconfig()  # Keep this to allow :set changes to persist
+
+# ================================
+# General Behavior
+# ================================
+
+# Always restore session on startup
+c.auto_save.session = True
+c.session.lazy_restore = True
 
 
-#darkmode
+# Smooth scrolling globally
+c.scrolling.smooth = True
+
+# Global video and JS settings
+c.content.javascript.enabled = True
+c.content.autoplay = False
+c.content.media.audio_video_capture = True
+c.content.media.audio_capture = True
+c.content.media.video_capture = True
+c.content.webgl = True
+c.content.javascript.can_open_tabs_automatically = False
+config.bind("M", "spawn mpv {url}")
 
 
+# Half-page smooth scroll
+config.bind("<Ctrl-d>", "scroll-page 0 0.5")
+config.bind("<Ctrl-u>", "scroll-page 0 -0.5")
+
+# Fast scrolling with j k
+config.bind("j", "cmd-repeat 5 scroll-px 0 20")
+config.bind("k", "cmd-repeat 5 scroll-px 0 -20")
 
 
+# Disable autoplay for videos
+c.content.autoplay = False
 
-#Binds for normal
+# ================================
+# Tabs Configuration
+# ================================
+# Show tabs at the top
+c.tabs.position = "top"
+c.window.hide_decoration = True
 
-config.bind("<Ctrl-Shift-s>", "config-cycle tabs.show always never")
-config.bind("<Ctrl-s>","config-cycle statusbar.show always never")
+# Increase tab font size
+c.fonts.tabs.selected = "14pt default_family"
+c.fonts.tabs.unselected = "14pt default_family"
 
-#color palatte
-# Tokyonight Moon for qutebrowser (matches LazyVim default)
+# Add nice padding
+c.statusbar.padding = {"top": 8, "bottom": 8, "left": 12, "right": 12}
+
+# Use rounded corners for completion menu
+c.completion.scrollbar.width = 10
+
+# Add padding to tabs (top, bottom, left, right)
+c.tabs.padding = {"top": 8, "bottom": 8, "left": 8, "right": 8}
+
+# Maximum width of tabs
+c.tabs.max_width = 300
+
+# ================================
+# Command Line & Status Bar
+# ================================
+# Increase command line font size
+c.fonts.statusbar = "14pt default_family"
+c.fonts.completion.entry = "14pt default_family"
+c.fonts.completion.category = "bold 14pt default_family"
+
+# Status bar always visible
+c.statusbar.show = "always"
+
+# ================================
+# Catppuccin Mocha Theme
+# ================================
+# This matches your tmux and sketchybar aesthetic
+
+catppuccin = {
+    "rosewater": "#f5e0dc",
+    "flamingo": "#f2cdcd",
+    "pink": "#f5c2e7",
+    "mauve": "#cba6f7",
+    "red": "#f38ba8",
+    "maroon": "#eba0ac",
+    "peach": "#fab387",
+    "yellow": "#f9e2af",
+    "green": "#a6e3a1",
+    "teal": "#94e2d5",
+    "sky": "#89dceb",
+    "sapphire": "#74c7ec",
+    "blue": "#89b4fa",
+    "lavender": "#b4befe",
+    "text": "#cdd6f4",
+    "subtext1": "#bac2de",
+    "subtext0": "#a6adc8",
+    "overlay2": "#9399b2",
+    "overlay1": "#7f849c",
+    "overlay0": "#6c7086",
+    "surface2": "#585b70",
+    "surface1": "#45475a",
+    "surface0": "#313244",
+    "base": "#1e1e2e",
+    "mantle": "#181825",
+    "crust": "#11111b",
+}
+
+# Force Qutebrowser UI colors
+c.colors.completion.fg = catppuccin["text"]
+c.colors.completion.odd.bg = catppuccin["base"]
+c.colors.completion.even.bg = catppuccin["mantle"]
+c.colors.completion.category.bg = catppuccin["surface0"]
+c.colors.completion.category.fg = catppuccin["lavender"]
+c.colors.completion.item.selected.bg = catppuccin["surface1"]
+c.colors.completion.item.selected.fg = catppuccin["text"]
+
+# URL color
+c.colors.statusbar.url.fg = "#cdd6f4"  # Base text
+c.colors.statusbar.url.hover.fg = "#89b4fa"  # Blue on hover
+c.colors.statusbar.url.success.https.fg = "#a6e3a1"  # Green for HTTPS
+c.colors.statusbar.url.error.fg = "#f38ba8"  # Red for errors
 
 
+# Tab colors
+c.colors.tabs.bar.bg = catppuccin["mantle"]
+c.colors.tabs.odd.bg = catppuccin["base"]
+c.colors.tabs.even.bg = catppuccin["base"]
+c.colors.tabs.selected.odd.bg = catppuccin["mauve"]
+c.colors.tabs.selected.even.bg = catppuccin["mauve"]
+c.colors.tabs.selected.odd.fg = catppuccin["crust"]
+c.colors.tabs.selected.even.fg = catppuccin["crust"]
+c.colors.tabs.odd.fg = catppuccin["text"]
+c.colors.tabs.even.fg = catppuccin["text"]
+
+# Status bar
+c.colors.statusbar.normal.bg = catppuccin["mantle"]
+c.colors.statusbar.normal.fg = catppuccin["text"]
+c.colors.statusbar.command.bg = catppuccin["surface0"]
+c.colors.statusbar.command.fg = catppuccin["lavender"]
+c.colors.statusbar.insert.bg = catppuccin["green"]
+c.colors.statusbar.insert.fg = catppuccin["crust"]
+c.colors.statusbar.passthrough.bg = catppuccin["blue"]
+c.colors.statusbar.passthrough.fg = catppuccin["crust"]
+
+# download bar
+c.colors.messages.info.bg = catppuccin["crust"]
+c.colors.downloads.error.bg = catppuccin["red"]
+c.colors.downloads.start.bg = catppuccin["green"]
+c.colors.downloads.stop.bg = catppuccin["mantle"]
+
+# Tab tiling format
+c.tabs.title.format = "{audio}{current_title}"
+
+# ======================
+# Font Configuration
+# ======================
+
+# UI font size
+c.fonts.default_size = "13pt"
+
+# Webpage font sizing
+c.fonts.web.size.default = 16
+c.fonts.web.size.default_fixed = 13
+c.fonts.web.size.minimum = 0
+c.fonts.web.size.minimum_logical = 6
+
+# Default font family for web content
+c.fonts.web.family.standard = "JetBrainsMono Nerd Font"
+c.fonts.web.family.fixed = "JetBrainsMono Nerd Font"
+c.fonts.web.family.serif = "JetBrainsMono Nerd Font"
+c.fonts.web.family.sans_serif = "JetBrainsMono Nerd Font"
+c.fonts.web.family.cursive = "JetBrainsMono Nerd Font"
+c.fonts.web.family.fantasy = "JetBrainsMono Nerd Font"
+
+# Completion (command suggestions)
+c.colors.completion.fg = catppuccin["text"]
+c.colors.completion.odd.bg = catppuccin["base"]
+c.colors.completion.even.bg = catppuccin["base"]
+c.colors.completion.category.bg = catppuccin["mantle"]
+c.colors.completion.category.fg = catppuccin["lavender"]
+c.colors.completion.item.selected.bg = catppuccin["surface1"]
+c.colors.completion.item.selected.fg = catppuccin["mantle"]
+
+# Privacy Settings
+config.set("content.webgl", False, "*")  # Disable WebGL
+config.set("content.canvas_reading", False)  # Prevent canvas fingerprinting
+config.set("content.geolocation", False)  # Block location access
+config.set("content.webrtc_ip_handling_policy", "default-public-interface-only")
 
 
-# NOTE: config.py is intended for advanced users who are comfortable
-# with manually migrating the config file on qutebrowser upgrades. If
-# you prefer, you can also configure qutebrowser using the
-# :set/:bind/:config-* commands without having to write a config.py
-# file.
-#
-# Documentation:
-#   qute://help/configuring.html
-#   qute://help/settings.html
+# ================================
+# Key Bindings (Optional)
+# ================================
+config.bind("<Ctrl-w>", "tab-close")
+config.bind("<Ctrl-t>", "open -t")
+config.bind("<Ctrl-r>", "config-source")
 
-# Change the argument to True to still load settings configured via autoconfig.yml
-config.load_autoconfig(False)
 
-# Which cookies to accept. With QtWebEngine, this setting also controls
-# other features with tracking capabilities similar to those of cookies;
-# including IndexedDB, DOM storage, filesystem API, service workers, and
-# AppCache. Note that with QtWebKit, only `all` and `never` are
-# supported as per-domain values. Setting `no-3rdparty` or `no-
-# unknown-3rdparty` per-domain on QtWebKit will have the same effect as
-# `all`. If this setting is used with URL patterns, the pattern gets
-# applied to the origin/first party URL of the page making the request,
-# not the request URL. With QtWebEngine 5.15.0+, paths will be stripped
-# from URLs, so URL patterns using paths will not match. With
-# QtWebEngine 5.15.2+, subdomains are additionally stripped as well, so
-# you will typically need to set this setting for `example.com` when the
-# cookie is set on `somesubdomain.example.com` for it to work properly.
-# To debug issues with this setting, start qutebrowser with `--debug
-# --logfilter network --debug-flag log-cookies` which will show all
-# cookies being set.
-# Type: String
-# Valid values:
-#   - all: Accept all cookies.
-#   - no-3rdparty: Accept cookies from the same origin only. This is known to break some sites, such as GMail.
-#   - no-unknown-3rdparty: Accept cookies from the same origin only, unless a cookie is already set for the domain. On QtWebEngine, this is the same as no-3rdparty.
-#   - never: Don't accept cookies at all.
-config.set('content.cookies.accept', 'all', 'chrome-devtools://*')
-
-# Which cookies to accept. With QtWebEngine, this setting also controls
-# other features with tracking capabilities similar to those of cookies;
-# including IndexedDB, DOM storage, filesystem API, service workers, and
-# AppCache. Note that with QtWebKit, only `all` and `never` are
-# supported as per-domain values. Setting `no-3rdparty` or `no-
-# unknown-3rdparty` per-domain on QtWebKit will have the same effect as
-# `all`. If this setting is used with URL patterns, the pattern gets
-# applied to the origin/first party URL of the page making the request,
-# not the request URL. With QtWebEngine 5.15.0+, paths will be stripped
-# from URLs, so URL patterns using paths will not match. With
-# QtWebEngine 5.15.2+, subdomains are additionally stripped as well, so
-# you will typically need to set this setting for `example.com` when the
-# cookie is set on `somesubdomain.example.com` for it to work properly.
-# To debug issues with this setting, start qutebrowser with `--debug
-# --logfilter network --debug-flag log-cookies` which will show all
-# cookies being set.
-# Type: String
-# Valid values:
-#   - all: Accept all cookies.
-#   - no-3rdparty: Accept cookies from the same origin only. This is known to break some sites, such as GMail.
-#   - no-unknown-3rdparty: Accept cookies from the same origin only, unless a cookie is already set for the domain. On QtWebEngine, this is the same as no-3rdparty.
-#   - never: Don't accept cookies at all.
-config.set('content.cookies.accept', 'all', 'devtools://*')
-
-# Value to send in the `Accept-Language` header. Note that the value
-# read from JavaScript is always the global value.
-# Type: String
-config.set('content.headers.accept_language', '', 'https://matchmaker.krunker.io/*')
-
-# User agent to send.  The following placeholders are defined:  *
-# `{os_info}`: Something like "X11; Linux x86_64". * `{webkit_version}`:
-# The underlying WebKit version (set to a fixed value   with
-# QtWebEngine). * `{qt_key}`: "Qt" for QtWebKit, "QtWebEngine" for
-# QtWebEngine. * `{qt_version}`: The underlying Qt version. *
-# `{upstream_browser_key}`: "Version" for QtWebKit, "Chrome" for
-# QtWebEngine. * `{upstream_browser_version}`: The corresponding
-# Safari/Chrome version. * `{upstream_browser_version_short}`: The
-# corresponding Safari/Chrome   version, but only with its major
-# version. * `{qutebrowser_version}`: The currently running qutebrowser
-# version.  The default value is equal to the default user agent of
-# QtWebKit/QtWebEngine, but with the `QtWebEngine/...` part removed for
-# increased compatibility.  Note that the value read from JavaScript is
-# always the global value.
-# Type: FormatString
-config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}; rv:136.0) Gecko/20100101 Firefox/139.0', 'https://accounts.google.com/*')
-
-# Load images automatically in web pages.
-# Type: Bool
-config.set('content.images', True, 'chrome-devtools://*')
-
-# Load images automatically in web pages.
-# Type: Bool
-config.set('content.images', True, 'devtools://*')
-
-# Enable JavaScript.
-# Type: Bool
-config.set('content.javascript.enabled', True, 'chrome-devtools://*')
-
-# Enable JavaScript.
-# Type: Bool
-config.set('content.javascript.enabled', True, 'devtools://*')
-
-# Enable JavaScript.
-# Type: Bool
-config.set('content.javascript.enabled', True, 'chrome://*/*')
-
-# Enable JavaScript.
-# Type: Bool
-config.set('content.javascript.enabled', True, 'qute://*/*')
-
-# Allow locally loaded documents to access remote URLs.
-# Type: Bool
-config.set('content.local_content_can_access_remote_urls', True, 'file:///Users/kagaseo/Library/Application%20Support/qutebrowser/userscripts/*')
-
-# Allow locally loaded documents to access other local URLs.
-# Type: Bool
-config.set('content.local_content_can_access_file_urls', False, 'file:///Users/kagaseo/Library/Application%20Support/qutebrowser/userscripts/*')
+# ================================
+# End of Config
+# ================================
