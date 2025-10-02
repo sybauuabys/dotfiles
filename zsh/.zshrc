@@ -1,4 +1,6 @@
 export XDG_CONFIG_HOME="$HOME/.config"
+export PATH="$HOME/bin:$PATH"
+
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # history setup
@@ -23,3 +25,8 @@ alias cd="z"
 #starship
 export STARSHIP_CONFIG="$HOME/dotfiles/.config/starship/starship.toml"
 eval "$(starship init zsh)"
+
+# obsidian 
+alias oo="cd $HOME/Documents/KagaseoVault"
+alias or="cd $HOME/Documents/KagaseoVault/inbox/*.md"
+alias oo="cd $HOME/notion-obsidian-sync-kagaseo && node batchUpload.js --lastmode-days-window 5"
