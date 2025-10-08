@@ -1,4 +1,5 @@
 vim.cmd("let g:netrw_liststyle = 3")
+vim.opt.conceallevel = 2
 
 local opt = vim.opt
 

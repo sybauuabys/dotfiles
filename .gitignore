@@ -24,6 +24,7 @@ qutebrowser/.qutebrowser/history
 .config/nvim/backup/
 .config/nvim/swap/
 .config/nvim/undo/
+.config/nvim/lua/plugins/ai.lua
 
 # Ignore local machine-specific configs
 .local/
