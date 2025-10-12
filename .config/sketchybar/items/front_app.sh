@@ -1,24 +1,23 @@
 #!/bin/bash
 
-FRONT_APP_SCRIPT='ICON_NAME=$($HOME/.config/sketchybar/plugins/icon_map.sh "$INFO"); ICON=$($HOME/.config/sketchybar/plugins/icon_resolver.sh "$ICON_NAME"); sketchybar --set $NAME label="$INFO" icon="$ICON"'
-
 aerospace=(
   script="$PLUGIN_DIR/aerospace.sh"
   icon.font="$FONT:Bold:16.0"
   label.drawing=off
   icon.width=30
   icon=$YABAI_GRID
-  icon.color=$ORANGE
+  icon.color=$GRUVBOX_BRIGHT_BLUE
   associated_display=active
 )
 
 front_app=(
-  script="$FRONT_APP_SCRIPT"
+  script="$PLUGIN_DIR/front_app.sh"
   icon.drawing=off
   padding_left=0
-  label.color=$WHITE
+  label.color=$GRUVBOX_FG1
   label.font="$FONT:Black:16.0"
   associated_display=active
+  update_freq=1
 )
 
 sketchybar --add event aerospace_workspace_change \

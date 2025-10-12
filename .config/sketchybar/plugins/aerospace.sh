@@ -23,10 +23,10 @@ update_workspace_display() {
   for workspace in $ALL_WORKSPACES; do
     if [ "$workspace" = "$CURRENT_WORKSPACE" ]; then
       # Current workspace - highlight it
-      args+=(--set space.$workspace background.drawing=on background.color=$BACKGROUND_2 icon.color=$RED)
+      args+=(--set space.$workspace background.drawing=on background.color=$BACKGROUND_2 icon.color=$GRUVBOX_BRIGHT_RED)
     else
       # Other workspaces - dim them
-      args+=(--set space.$workspace background.drawing=off icon.color=$WHITE)
+      args+=(--set space.$workspace background.drawing=off icon.color=$GRUVBOX_FG1)
     fi
   done
   

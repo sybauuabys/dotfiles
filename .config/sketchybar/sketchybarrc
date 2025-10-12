@@ -25,8 +25,8 @@ bar=(
   shadow=on
   position=top
   sticky=on
-  padding_right=10
-  padding_left=10
+  padding_right=15
+  padding_left=15
   corner_radius=9
   y_offset=10
   margin=10
@@ -76,6 +76,8 @@ source "$ITEM_DIR/github.sh"
 source "$ITEM_DIR/battery.sh"
 source "$ITEM_DIR/volume.sh"
 source "$ITEM_DIR/cpu.sh"
+
+# Individual containers are now defined in each item file
 
 # Forcing all item scripts to run (never do this outside of sketchybarrc)
 sketchybar --update

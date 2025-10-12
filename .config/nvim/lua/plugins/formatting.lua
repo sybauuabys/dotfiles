@@ -21,6 +21,24 @@ return {
         lua = { "stylua" },
         python = { "isort", "black" },
       },
+
+      formatters = {
+        prettier = {
+          prepend_args = {
+            "--print-width",
+            "9999",
+            "--prose-wrap",
+            "preserve",
+            "--html-whitespace-sensitivity",
+            "ignore",
+            "--bracket-same-line",
+            "true",
+            "--single-attribute-per-line",
+            "false",
+          },
+        },
+      },
+
       format_on_save = {
         lsp_fallback = true,
         async = false,
@@ -28,6 +46,7 @@ return {
       },
     })
 
+    -- Keymap for manual formatting
     vim.keymap.set({ "n", "v" }, "<leader>mp", function()
       conform.format({
         lsp_fallback = true,

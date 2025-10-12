@@ -27,7 +27,7 @@ do
     padding_left=2
     padding_right=2
     label.padding_right=20
-    icon.highlight_color=$RED
+    icon.highlight_color=$GRUVBOX_BRIGHT_RED
     label.font="sketchybar-app-font:Regular:16.0"
     label.background.height=26
     label.background.drawing=on
@@ -47,7 +47,7 @@ do
     separator_config=(
       icon="|"
       icon.font="$FONT:Regular:14.0"
-      icon.color=$GREY
+      icon.color=$GRUVBOX_FG4
       padding_left=5
       padding_right=5
       label.drawing=off
@@ -59,11 +59,10 @@ do
   fi
 done
 
-spaces=(
+spaces_bracket=(
   background.color=$BACKGROUND_1
   background.border_color=$BACKGROUND_2
   background.border_width=2
-  background.drawing=on
 )
 
 separator=(
@@ -74,11 +73,11 @@ separator=(
   label.drawing=off
   associated_display=active
   click_script='aerospace workspace --create && sketchybar --trigger aerospace_workspace_change'
-  icon.color=$WHITE
+  icon.color=$GRUVBOX_FG1
 )
 
 sketchybar --add bracket spaces '/space\..*/' \
-           --set spaces "${spaces[@]}"        \
+           --set spaces "${spaces_bracket[@]}" \
                                               \
            --add item separator left          \
            --set separator "${separator[@]}"

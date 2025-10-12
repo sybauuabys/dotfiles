@@ -99,4 +99,5 @@ if [ "$BUTTON" = "right" ] || [ "$MODIFIER" = "shift" ]; then
   toggle_battery_info
 else
   toggle_detail
+
 fi

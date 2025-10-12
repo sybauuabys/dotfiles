@@ -1,24 +1,24 @@
-local wezterm = require("wezterm")
-local constants = require("constants")
-
-local command = {
-	brief = "Toggle terminal transparency (glass effect)",
-	icon = "md_circle_opacity",
-	action = wezterm.action_callback(function(window)
-		local overrides = window:get_config_overrides() or {}
-
-		if not overrides.window_background_opacity or overrides.window_background_opacity == 1 then
-			overrides.window_background_opacity = 0.85
-			overrides.macos_window_background_blur = 20 -- strength of blur (higher = more glassy)
-			overrides.window_background_image = ""
-		else
-			overrides.window_background_opacity = 1
-			overrides.macos_window_background_blur = 0 -- disable blur
-			overrides.window_background_image = constants.bg_image
-		end
-
-		window:set_config_overrides(overrides)
-	end),
-}
-
-return command
+-- local wezterm = require("wezterm")
+-- local constants = require("constants")
+--
+-- local command = {
+-- 	brief = "Toggle terminal transparency (glass effect)",
+-- 	icon = "md_circle_opacity",
+-- 	action = wezterm.action_callback(function(window)
+-- 		local overrides = window:get_config_overrides() or {}
+--
+-- 		if not overrides.window_background_opacity or overrides.window_background_opacity == 1 then
+-- 			overrides.window_background_opacity = 0.85
+-- 			overrides.macos_window_background_blur = 20 -- strength of blur (higher = more glassy)
+-- 			overrides.window_background_image = ""
+-- 		else
+-- 			overrides.window_background_opacity = 1
+-- 			overrides.macos_window_background_blur = 0 -- disable blur
+-- 			overrides.window_background_image = constants.bg_image
+-- 		end
+--
+-- 		window:set_config_overrides(overrides)
+-- 	end),
+-- }
+--
+-- return command
