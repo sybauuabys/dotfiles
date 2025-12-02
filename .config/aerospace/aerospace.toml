@@ -63,6 +63,16 @@ outer.bottom =     10
 outer.top =        60
 outer.right =      10
 
+[workspace-to-monitor-force-assignment]
+u = 'main'
+i = 'main'
+o = 'main'
+p = 'main'
+x = 'secondary'
+z = 'secondary'
+c = 'secondary'
+v = 'secondary'
+
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 # 'main' binding mode must be always presented
@@ -97,6 +107,10 @@ alt-u = 'workspace u'
 alt-i = 'workspace i'
 alt-o = 'workspace o'
 alt-p = 'workspace p'
+alt-x = 'workspace x'
+alt-z = 'workspace z'
+alt-c = 'workspace c'
+alt-v = 'workspace v'
 
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
@@ -104,6 +118,10 @@ alt-shift-u = 'move-node-to-workspace u'
 alt-shift-i = 'move-node-to-workspace i'
 alt-shift-o = 'move-node-to-workspace o'
 alt-shift-p = 'move-node-to-workspace p'
+alt-shift-x = 'move-node-to-workspace x'
+alt-shift-z = 'move-node-to-workspace z'
+alt-shift-c = 'move-node-to-workspace c'
+alt-shift-v = 'move-node-to-workspace v'
 
 
 # Open/focus apps using keybinds
@@ -111,10 +129,7 @@ alt-shift-p = 'move-node-to-workspace p'
 alt-s = 'exec-and-forget open -a /Applications/Spotify.app'
 alt-n = 'exec-and-forget open -a /Applications/notion.app'
 alt-w = 'exec-and-forget open -a /Applications/WezTerm.app'
-alt-a = 'exec-and-forget open -a /Applications/Arc.app'
-alt-d = 'exec-and-forget open -a /Applications/Dia.app'
 alt-shift-w = 'exec-and-forget open -a /Applications/Warp.app'
-alt-v = 'exec-and-forget open -a /Applications/Vivaldi.app'
 alt-q = 'exec-and-forget open -a /Applications/qutebrowser.app'
 
 

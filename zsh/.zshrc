@@ -24,3 +24,5 @@ alias cd="z"
 #starship
 export STARSHIP_CONFIG="$HOME/dotfiles/.config/starship/starship.toml"
 eval "$(starship init zsh)"
+
+export PATH=$PATH:/Users/kagaseo/.spicetify

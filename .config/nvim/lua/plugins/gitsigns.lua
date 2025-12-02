@@ -31,13 +31,9 @@ return {
       map("n", "<leader>hp", gs.preview_hunk, "Preview hunk")
 
       map("n", "<leader>hb", function()
-        gs.blame_line({ full = true })
-      end, "Blame line")
-      map("n", "<leader>hB", gs.toggle_current_line_blame, "Toggle line blame")
+        map("n", "<leader>hB", gs.toggle_current_line_blame, "Toggle line blame")
 
-      map("n", "<leader>hd", gs.diffthis, "Diff this")
-      map("n", "<leader>hD", function()
-        gs.diffthis("~")
+        map("n", "<leader>hd", gs.diffthis, "Diff this")
       end, "Diff this ~")
 
       -- Text object
